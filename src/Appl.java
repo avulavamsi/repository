@@ -1,54 +1,53 @@
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 public class Appl {
 
 	public static void main(String[] args) {
-		Vertex nodeA = new Vertex("A");
-		Vertex nodeB = new Vertex("B");
-		Vertex nodeC = new Vertex("C");
-		Vertex nodeD = new Vertex("D");
-		Vertex nodeE = new Vertex("E");
-		Vertex nodeF = new Vertex("F");
 
-		nodeA.addDest(nodeB, 10);
-		nodeA.addDest(nodeC, 15);
-
-		nodeB.addDest(nodeD, 12);
-		nodeB.addDest(nodeF, 15);
-		nodeB.addDest(nodeA, 10);
-
-		nodeC.addDest(nodeE, 10);
-		nodeC.addDest(nodeA, 15);
-
-		nodeD.addDest(nodeE, 2);
-		nodeD.addDest(nodeF, 1);
-		nodeD.addDest(nodeB, 12);
-
-		nodeF.addDest(nodeE, 5);
-		nodeF.addDest(nodeB, 15);
-		nodeF.addDest(nodeD, 1);
-		
-		nodeE.addDest(nodeF, 5);
-		nodeE.addDest(nodeC, 10);
-		nodeE.addDest(nodeD, 2);
-
+		Vertex sourceVertex = null;
+		List<String> alpha = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O");
 		Graph graph = new Graph();
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		System.out.printf("Enter total number of Vertexes: ");
+		int vCount = scan.nextInt();
 
-		graph.addVertex(nodeA);
-		graph.addVertex(nodeB);
-		graph.addVertex(nodeC);
-		graph.addVertex(nodeD);
-		graph.addVertex(nodeE);
-		graph.addVertex(nodeF);
+		for (int i = 0; i < vCount; i++) {
+			Vertex v = new Vertex(alpha.get(i));
+			graph.addVertex(v);
+		}
 
-//		graph = DijkstraAlgorithm.calShortestPath(graph, nodeA);
-		DijkstraAlgorithm.calShortestPath(nodeA);
-		
-		Set<Vertex> vertexes = new HashSet<>();
-		vertexes = graph.getVertex();
-		for(Vertex vertex : vertexes) {
-			System.out.println(nodeA.getName()+" to "+vertex.getName()+"->"+vertex.getDist());
+		for (int i = 0; i < vCount; i++) {
+			Vertex v1 = graph.getVertexByName(alpha.get(i));
+			for (int j = i + 1; j < vCount; j++) {
+				Vertex v2 = graph.getVertexByName(alpha.get(j));
+				System.out.printf("Enter distance between " + alpha.get(i) + " and " + alpha.get(j) + ": ");
+				int dist = scan.nextInt();
+				if (dist != 0) {
+					v1.addDest(v2, dist);
+					v2.addDest(v1, dist);
+				}
+
+			}
+			graph.addVertex(v1);
+		}
+
+		System.out.printf("EnterSource node(A or B or C...etc: ");
+		String source = scan.next().toUpperCase();
+		sourceVertex = graph.getVertexByName(source);
+		if (sourceVertex != null) {
+			DijkstraAlgorithm.calShortestPath(sourceVertex);
+
+			Set<Vertex> vertexes = new HashSet<>();
+			vertexes = graph.getVertex();
+			System.out.println("The results are: ");
+			for (Vertex vertex : vertexes) {
+				System.out.println("Shortest distance from "+ sourceVertex.getName() + " to " + vertex.getName() + "->" + vertex.getDist());
+			}
 		}
 	}
 

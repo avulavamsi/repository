@@ -6,7 +6,6 @@ import java.util.Set;
 
 public class DijkstraAlgorithm {
 
-//	public static Graph calShortestPath(Graph graph, Vertex sourceVertex) {
 	public static void calShortestPath(Vertex sourceVertex) {
 
 		sourceVertex.setDist(0);
@@ -21,8 +20,6 @@ public class DijkstraAlgorithm {
 
 			for (Map.Entry<Vertex, Integer> adj : currentVertex.getAdjVertexes().entrySet()) {
 				if (!settledVertex.contains(adj.getKey())) {
-					// System.out.println("Node: "+adj.getKey().getName()+" "+"Distance:
-					// "+adj.getValue());
 					Vertex adjvertex = adj.getKey();
 					Integer cost = adj.getValue();
 					Integer sourceCost = currentVertex.getDist();
@@ -41,8 +38,6 @@ public class DijkstraAlgorithm {
 			}
 			settledVertex.add(currentVertex);
 		}
-
-//		return graph;
 
 	}
 
